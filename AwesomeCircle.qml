@@ -75,6 +75,7 @@ Rectangle {
     ParticleLine {
         id: particleUplink
         anchors.fill: canvas
+        directionOutTooIn: true
         colors: ["magenta", "orange", "orange", "purple", "purple", "magenta"]
     }
 

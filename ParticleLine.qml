@@ -43,12 +43,13 @@ import QtQuick.Particles 2.0
 
 Item {
     id: root
+    property bool directionOutTooIn: false
 
     function burstParticle(fromX, fromY, toX, toY, reverse) {
         trailsNormal.setToPosition(toX, toY)
         trailsNormal.burst(1, fromX, fromY)
         trailsNormal2.setToPosition(root.width/2, root.height/2)
-        if(!reverse)
+        if(directionOutTooIn)
         {
             trailsNormal2.burst(1, fromX, fromY)
         }
@@ -56,7 +57,6 @@ Item {
         {
             trailsNormal2.burst(1, toX, toY)
         }
-
     }
 
     Item {
@@ -75,6 +75,7 @@ Item {
             strength: 100000
             affectedParameter: Attractor.Acceleration
             proportionalToDistance: Attractor.InverseQuadratic
+            enabled: false
         }
     }
 
@@ -178,6 +179,7 @@ Item {
         //sizeVariation: 4
     }
 
+
     TrailEmitter {
         id: trai2
         anchors.fill: parent
@@ -185,13 +187,26 @@ Item {
         group: "A"
         follow: "B"
 
-        emitRatePerParticle: 5
-        lifeSpan: 200
-        //velocity: PointDirection {xVariation: 40; yVariation: 40;}
+        emitRatePerParticle: 50
+        lifeSpan: 300
+
+        velocity: TargetDirection {
+            targetX: root.width/2
+            targetY: root.height/2
+            proportionalMagnitude: true
+            magnitude: 1.1
+            targetVariation: 20
+        }
+        acceleration: TargetDirection {
+            targetX: root.width/2
+            targetY: root.height/2
+            targetVariation: 200
+        }
 
         size: 8
-        sizeVariation: 20
+        sizeVariation: 4
     }
+
 
     Emitter {
         id: trailsNormal2
@@ -199,12 +214,8 @@ Item {
         group: "B"
 
         emitRate: 0
-        lifeSpan: 500
+        lifeSpan: 350
         enabled: false
-
-        onParticleCountChanged: {
-            console.log("count changed")
-        }
 
         property int toX: 0
         property int toY: 0
@@ -214,14 +225,6 @@ Item {
             trailsNormal2.toY = toY
         }
 
-        velocity: TargetDirection {
-            targetX: trailsNormal2.toX
-            targetY: trailsNormal2.toY
-            proportionalMagnitude: true
-            magnitude: 1.5
-        }
-        velocityFromMovement: 1
-
-        size: 8
+        size: 16
     }
 }
