@@ -90,6 +90,14 @@ Item {
         alpha: 0
         colorVariation: 0.3
     }
+    ImageParticle {
+        system: sys2
+        source: "images/particle.png"
+        color: particleA.color
+        groups: ["C"]
+        alpha: 0
+        colorVariation: 0.6
+    }
     ParticleSystem { id: sys1 }
     ImageParticle {
         system: sys1
@@ -200,10 +208,58 @@ Item {
         acceleration: TargetDirection {
             targetX: root.width/2
             targetY: root.height/2
-            targetVariation: 200
         }
 
         size: 8
+        sizeVariation: 4
+    }
+
+    TrailEmitter {
+        anchors.fill: parent
+        system: sys2
+        group: "C"
+        follow: "A"
+
+        emitRatePerParticle: 5
+        lifeSpan: 350
+
+        velocity: TargetDirection {
+            targetX: root.width/2
+            targetY: root.height/2
+            proportionalMagnitude: true
+            magnitude: 1.1
+            targetVariation: 20
+        }
+        acceleration: TargetDirection {
+            targetX: root.width/2
+            targetY: root.height/2
+            targetVariation: 200
+        }
+
+        size: 4
+        sizeVariation: 4
+    }
+
+    TrailEmitter {
+        anchors.fill: parent
+        system: sys2
+        group: "D"
+        follow: "C"
+
+        emitRatePerParticle: 1
+        lifeSpan: 350
+
+        velocity: TargetDirection {
+            targetX: root.width/2
+            targetY: root.height/2
+            targetVariation: 20
+        }
+        acceleration: TargetDirection {
+            targetX: root.width/2
+            targetY: root.height/2
+        }
+
+        size: 4
         sizeVariation: 4
     }
 
