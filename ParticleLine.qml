@@ -48,34 +48,16 @@ Item {
     function burstParticle(fromX, fromY, toX, toY, reverse) {
         trailsNormal.setToPosition(toX, toY)
         trailsNormal.burst(1, fromX, fromY)
-        trailsNormal2.setToPosition(root.width/2, root.height/2)
+
         if(directionOutTooIn)
         {
+            trailsNormal2.setToPosition(root.width/2, root.height/2)
             trailsNormal2.burst(1, fromX, fromY)
         }
         else
         {
-            trailsNormal2.burst(1, toX, toY)
-        }
-    }
-
-    Item {
-        x: 150
-        y: 150
-        width: 100
-        height: 100
-        //color: "red"
-        //opacity: 0.5
-        Attractor {
-            anchors.fill: parent
-            system: sys2
-            once: true
-            pointX: parent.width/2
-            pointY: parent.height/2
-            strength: 100000
-            affectedParameter: Attractor.Acceleration
-            proportionalToDistance: Attractor.InverseQuadratic
-            enabled: false
+            trailsNormal2.setToPosition(fromX, fromY)
+            trailsNormal2.burst(1, fromX, fromY)
         }
     }
 
@@ -123,18 +105,6 @@ Item {
                 to: colors[5]
                 duration: 2000
             }
-            /*
-            ColorAnimation {
-                from: "blue"
-                to: "violet"
-                duration: 2000
-            }
-            ColorAnimation {
-                from: "violet"
-                to: "cyan"
-                duration: 2000
-            }
-            */
         }
         colorVariation: 0.3
     }
@@ -202,8 +172,8 @@ Item {
             targetX: root.width/2
             targetY: root.height/2
             proportionalMagnitude: true
-            magnitude: 1.1
-            targetVariation: 20
+            magnitude: (root.directionOutTooIn) ? 1.1 : -0.3
+            targetVariation: (root.directionOutTooIn) ? 20 : 80
         }
         acceleration: TargetDirection {
             targetX: root.width/2
@@ -227,32 +197,8 @@ Item {
             targetX: root.width/2
             targetY: root.height/2
             proportionalMagnitude: true
-            magnitude: 1.1
-            targetVariation: 20
-        }
-        acceleration: TargetDirection {
-            targetX: root.width/2
-            targetY: root.height/2
-            targetVariation: 200
-        }
-
-        size: 4
-        sizeVariation: 4
-    }
-
-    TrailEmitter {
-        anchors.fill: parent
-        system: sys2
-        group: "D"
-        follow: "C"
-
-        emitRatePerParticle: 1
-        lifeSpan: 350
-
-        velocity: TargetDirection {
-            targetX: root.width/2
-            targetY: root.height/2
-            targetVariation: 20
+            magnitude: (root.directionOutTooIn) ? 1.1 : -0.3
+            targetVariation: (root.directionOutTooIn) ? 20 : 80
         }
         acceleration: TargetDirection {
             targetX: root.width/2
@@ -262,7 +208,6 @@ Item {
         size: 4
         sizeVariation: 4
     }
-
 
     Emitter {
         id: trailsNormal2
